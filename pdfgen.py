@@ -65,7 +65,7 @@ PAGE_W, PAGE_H = A4          # A4 = 595.27 × 841.89 points
 MARGIN         = 36          # 36 pt ≈ 1.27 cm — space around all four edges
 
 TITLE_FONT_SIZE      = 22
-WORD_BANK_FONT_SIZE  = 11
+WORD_BANK_FONT_SIZE  = 9
 WORD_BANK_LABEL_SIZE = 13
 
 # How many word-bank columns to use (words are wrapped across columns)
@@ -88,7 +88,8 @@ def generate_wordsearch_pdf(
     words: list[str],
     output_path: str,
     title: str = "Знайди слова",   # "Find the words" in Ukrainian
-    show_solution=False
+    show_solution=False,
+        is_uk: bool=True
 ) -> None:
     """
     Render `grid` and `words` as a printable A4 PDF and save to `output_path`.
@@ -167,7 +168,7 @@ def generate_wordsearch_pdf(
     # ── Step 5: draw the word bank ────────────────────────────────────────────
 
     word_bank_y_top = grid_y_top - grid_pixel_height - gap_below_grid
-    _draw_word_bank(c, words, word_bank_y_top)
+    _draw_word_bank(c, words, word_bank_y_top, is_uk)
 
     # ── Step 6: finalise ──────────────────────────────────────────────────────
     #
@@ -295,6 +296,7 @@ def _draw_word_bank(
     c: canvas.Canvas,
     words: list[str],
     y_top: float,
+        is_uk: bool
 ) -> None:
     """
     Draw the word-bank section starting at vertical position `y_top`.
@@ -310,7 +312,10 @@ def _draw_word_bank(
     # ── section heading ──────────────────────────────────────────────────────
     c.setFont(FONT_BOLD_NAME, WORD_BANK_LABEL_SIZE)
     c.setFillColor(LETTER_COLOR)
-    c.drawString(MARGIN, y_top, "Слова:")   # "Words:" in Ukrainian
+    if (is_uk):
+        c.drawString(MARGIN, y_top, "Слова:")   # "Words:" in Ukrainian
+    else:
+        c.drawString(MARGIN, y_top, "Words:")  # "Words:" in Ukrainian
 
     # ── thin dividing line ───────────────────────────────────────────────────
     #
@@ -335,8 +340,9 @@ def _draw_word_bank(
     c.setFillColor(LETTER_COLOR)
 
     for i, word in enumerate(words):
-        col_index = i % WORD_BANK_COLUMNS       # which column (0-based)
-        row_index = i // WORD_BANK_COLUMNS      # which row within that column
+        num_rows = math.ceil(len(words) / WORD_BANK_COLUMNS)
+        col_index = i // num_rows
+        row_index = i % num_rows
 
         x = MARGIN + col_index * col_width + 6  # +6 pt indent inside column
         y = words_start_y - row_index * line_height

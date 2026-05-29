@@ -43,11 +43,13 @@ def _word_cells(wp: _WordPos) -> list[tuple[int, int, str]]:
 
 
 class Puzzle:
-    def __init__(self, n, words: list[str], title):
-        self.word_bank: list[str] = [w.upper() for w in words]
+    def __init__(self, n, words: list[str], title, isUk: bool):
+        self.word_bank: list[str] = sorted([w.upper() for w in words])
+        print(self.word_bank)
         self.word_grid: list[list[str]] = []
         self.n = n
         self.title = title
+        self.isUk = isUk
 
         self._added_words: list[_WordPos] = []
 
@@ -58,6 +60,9 @@ class Puzzle:
         self.generate_empty_grid()
 
         for word_str in self.word_bank:
+            word_str = "".join([ch for ch in word_str if self.is_valid_char(ch)])
+            attempt = 0
+            attempt_thresh = 50
             while True:
                 # Choose pos and dir
                 r = random.randint(0, self.n - 1)
@@ -69,8 +74,13 @@ class Puzzle:
                 # If valid, go
                 valid, word_idx = self._is_valid(word)
                 if valid:
-                    self._added_words.append(word)
-                    break
+                    intersecting = [w for w in self._added_words if self._do_words_intersect(w, word)]
+                    non_intersecting = [w for w in self._added_words if w not in intersecting]
+                    if attempt > attempt_thresh or not self._is_within_range(non_intersecting, word):
+                        self._added_words.append(word)
+                        break
+                    else:
+                        attempt += 1
 
                 else:
                     if word_idx == -1 or not self._added_words:
@@ -84,9 +94,14 @@ class Puzzle:
 
                         valid2, _ = self._is_valid(word)
                         if valid2:
-                            self._added_words.append(word)
-                            done = True
-                            break
+                            intersecting = [w for w in self._added_words if self._do_words_intersect(w, word)]
+                            non_intersecting = [w for w in self._added_words if w not in intersecting]
+                            if attempt > attempt_thresh or not self._is_within_range(non_intersecting, word):
+                                self._added_words.append(copy.copy(word))
+                                done = True
+                                break
+                            else:
+                                attempt += 1
                     if done:
                         break
 
@@ -97,7 +112,10 @@ class Puzzle:
         for r in range(self.n):
             for c in range(self.n):
                 if self.word_grid[r][c] == "-":
-                    self.word_grid[r][c] = self.get_random_uk_char()
+                    if self.isUk:
+                        self.word_grid[r][c] = self.get_random_uk_char()
+                    else:
+                        self.word_grid[r][c] = self.get_random_en_char()
 
     @staticmethod
     def _get_valid_positions(word1: _WordPos, word2: _WordPos) -> list[tuple[int, int]]:
@@ -134,6 +152,30 @@ class Puzzle:
 
         return positions
 
+    @staticmethod
+    def _is_within_range(words: list[_WordPos], word: _WordPos) -> bool:
+        """Return if the given word is within a 1 cell range of another word"""
+        word_cells = {(r, c) for r, c, _ in _word_cells(word)}
+
+        for existing in words:
+            for r, c, _ in _word_cells(existing):
+                # Check all 8 neighbours + the cell itself (Chebyshev distance ≤ 1)
+                for dr in (-1, 0, 1):
+                    for dc in (-1, 0, 1):
+                        if (r + dr, c + dc) in word_cells:
+                            return True
+
+        return False
+
+    @staticmethod
+    def _do_words_intersect(word1: _WordPos, word2: _WordPos) -> bool:
+        """Do the two words intersect, ignoring valid or invalid"""
+        existing_map = {(r, c): letter for r, c, letter in _word_cells(word1)}
+        for r, c, letter in _word_cells(word2):
+            if (r, c) in existing_map:
+                return True
+        return False
+
     def _is_valid(self, word: _WordPos) -> tuple[bool, int]:
         """Given the candidate word, return if the given position it is set to be at is valid. This
         means it must be inside grid bounds, and it must not conflict with other words (i.e if it
@@ -150,9 +192,17 @@ class Puzzle:
         #    Sharing a cell is fine ONLY if the letters match (a real intersection).
         #    Any mismatch is a conflict — return that word's index.
         for idx, existing in enumerate(self._added_words):
-            existing_map = {(r, c): letter for r, c, letter in _word_cells(existing)}
-            for r, c, letter in cells:
-                if (r, c) in existing_map and existing_map[(r, c)] != letter:
+            existing_map = {(r, c): (letter, idx) for idx, (r, c, letter) in enumerate(_word_cells(existing))}
+            for i, (r, c, letter) in enumerate(cells):
+                if (r, c) not in existing_map:
+                    continue
+                existing_letter, existing_i = existing_map[(r, c)]
+                if existing_letter != letter:
+                    return False, idx
+                # reject if both letters are endpoints (first or last) of their respective words
+                candidate_is_endpoint = (i == 0 or i == len(word.word) - 1)
+                existing_is_endpoint = (existing_i == 0 or existing_i == len(existing.word) - 1)
+                if candidate_is_endpoint and existing_is_endpoint:
                     return False, idx
 
         return True, -1
@@ -174,5 +224,11 @@ class Puzzle:
         ukrainian = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ"
         return random.choice(ukrainian)
 
+    @staticmethod
+    def get_random_en_char():
+        english = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        return random.choice(english)
 
-
+    @staticmethod
+    def is_valid_char(ch: str) -> bool:
+        return ch in ("ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ")
