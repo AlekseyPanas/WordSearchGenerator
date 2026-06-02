@@ -84,19 +84,19 @@ PUZZLES = [
 
     # Emotions
     Puzzle(23, ["Bossy", "Feisty", "Stubborn", "Horny", "Loving", "Not Talking", "Pissed off",
-                "Tickling", "Playful", "Motivating", "Doomer", "Sad", "Nostalgic", "Standard", "Immersed in Music",
+                "Tickling", "Playful", "Motivating", "Doomer", "Sad", "Nostalgic", "Normal", "Immersed in Music",
                 "Sleepy", "Varenik", "Independent Woman", "Competitive", "Excited", "Zayibalasya",
-                "Impatient", "Caring", "", ""], "Olenka's Emotions", True),
+                "Impatient", "Caring", "Focused", "Revenge"], "Olenka's Emotions", True),
 
     # Lviv
     Puzzle(23, ["Resne Two", "Resne One", "Highschool One Hundred", "Lviv", "Potocki Palace",
                 "King Danylo Monument", "Lviv National Medical University", "Muzey Khvorob Lyudyny",
-                "Rebernya", "", "", "", "", "", "", "",
+                "Rebernya", "Tram", "", "", "", "", "", "",
                 "", "", "", "", "", "", "", "", "", ], "Лвів", True),
 
     # Makeup
-    Puzzle(23, ["Foundation", "Maskara", "Lipstick", "Blush", "", "", "",
-                "", "", "", "", "", "", "", "", "",
+    Puzzle(23, ["Foundation", "Maskara", "Lipstick", "Blush", "Dr Althea", "Micellar Water", "Eyeshadow",
+                "Eyeliner", "Toner", "Makeup Wipes", "Cotton Pads", "Teardrop Sponge", "Cerave", "", "", "",
                 "", "", "", "", "", "", "", "", "", ], "Makeup", True),
 
     # Clothes
@@ -106,34 +106,41 @@ PUZZLES = [
 
     # Lyosha
     Puzzle(23, ["Paragliding", "Hiking", "Mountains", "Motorcycle", "Computer",
-                "Programming", "Nerdy", "Creativity", "Writing", "Magengaard", "Game Development",
+                "Programming", "Nerdy", "Creativity", "Writing", "Magengaard", "Professor",
                 "Reading", "Philosophy", "Clumsy", "Elephant", "Road Trips",
-                "Italy", "Panas", "Aleksey", "Robots", "Weight Lifting", "", "", "", ""], "Lyosha", True),
+                "Italian", "Panas", "Aleksey", "Robotics", "Weight Lifting", "Drawing",
+                "Scifi Fantasy", "Aries", "Organizational"], "Lyosha", True),
 
     # Travel
-    Puzzle(23, ["", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "", ], "Travel", True),
+    Puzzle(23, ["Sunrise", "Mattress", "Phoenix", "Frontier", "Starbucks", "Coffee", "Sequoia",
+                "AFrame", "Redwoods", "Cactus", "San Francisco", "Golden Gate Bridge", "Car", "Airplane",
+                "Roadtrip", "Cactus Lyosha", "Angeles Crest Highway", "Ortega Highway", "ATV",
+                "New Yurt City", "Yosemite", "Mandarins", "Fireplace", "Record Player", "GPS"], "Travel", True),
 
     # Favorite Flowers
     Puzzle(23, ["Ranunculus", "Peonies", "Bush Rose", "Roses", "Lavender", "Carnations",
                 "", "", "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "", ], "Favorite Flowers", True),
+                "", "", "", "", "", "", "", "", ""], "Favorite Flowers", True),
 
     # New York
-    Puzzle(23, ["", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "", ], "New York", True),
+    Puzzle(23, ["Vitya", "Misplaced Pots", "Construction", "No Bathroom", "Curtis",
+                "Tottenville", "Car Sleeping", "Great Kills", "Wolfs Pond", "First Sex", "Miller Field",
+                "Long Drives", "Boardwalk", "Verazzano", "IKEA", "Brooklyn",
+                "Time Square", "Dima", "Emma", "Raccoons", "Yacht Docks", "Relationship Principles",
+                "Our Tree", "Cameras", "Piano"], "New York", True),
 
     # Vermont
-    Puzzle(23, ["", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "", ], "Vermont", True),
+    Puzzle(23, ["Claremont", "Springfield", "Perkinsville", "Sand Hill Trail",
+                "Ascutney", "Morningside", "Myra", "Ricky", "Gerda", "Liska", "Liquidation", "Reservoir Dam",
+                "Ladoga", "Olya", "By the River", "First Date", "Villagers Ice Cream", "Milk Farm", "Rubber Boat",
+                "Secret Love", "Stress", "Movie Nights", "First Kiss", "Black Wardrobe", "Attic"], "Vermont", True),
 
     # California
-    Puzzle(23, ["", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "", ], "California", True),
+    Puzzle(23, ["Botan Sushi", "Laguna Beach", "Verano Place", "Irvine", "Los Angeles",
+                "UC Irvine", "Irvine Valley College", "Maintenance", "Moving In", "Top of the World", "", "",
+                "Vanilla Street Bakery", "San Diego", "Irina Fedyshyn", "Easter Basket", "DMV",
+                "Verano Towers", "Furnishing", "Fort Bragg", "Sequoia", "Highway One",
+                "Natalya", "LAX", "Teddy Bear"], "California", True),
 
     # Perfumes
     Puzzle(23, ["Yves Libre", "Yves Berry Crush", "Gucci Bloom", "Light Blue",
@@ -143,12 +150,14 @@ PUZZLES = [
     # Mia
     Puzzle(23, ["Mia", "Delectables", "Bird", "Cat Tree", "Purring", "Hiding", "Butt Upwards",
                 "Petting", "Soft", "Bunny", "Zoomies", "Scratchpost", "Litterbox", "Purina Pro Plan",
-                "Nulo", "Tiny Paws and Whiskers", "Sneezing", "Grey", "White", "", "", "", "", "", ""], "Mia", True),
+                "Nulo", "Tiny Paws and Whiskers", "Sneezing", "Grey", "White", "Windows", "Rescue", "Antibiotic",
+                "Meow", "Couch", "Boogers"], "Mia", True),
 
     # New Jersey
-    Puzzle(23, ["Chestnut Street", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "",
-                "", "", "", "", "", "", "", "", "", ], "New Jersey", True),
+    Puzzle(23, ["Chestnut Street", "Sushi Boy", "Eighteenth Birthday", "First License", "Netcost",
+                "Burlington", "Marina", "Instacart", "Dahnerts Lake County Park", "Sadko Trans", "Orest",
+                "Escape", "Parking Lot", "Motorcycle", "Accident", "Passat", "Swing", "Dog", "Roses",
+                "Heart Pillow", "Makeup Table", "", "", "", ""], "New Jersey", True),
 
     # Cars
     Puzzle(23, ["Audi Q Five", "Audi Q Seven", "Audi A Four", "Audi A Six", "Mercedes GLE", "GMC Yukon",
